@@ -28,7 +28,7 @@ def create_x_length_str_a(length: int) -> str:
     name = ''
     for _ in range(length):
         name += 'a'
-    
+
     return name
 
 class Test(unittest.TestCase):
@@ -43,10 +43,11 @@ class Test(unittest.TestCase):
     """
     def test_create_journal_neg(self):
         """
-        Test constructor of journal object
+        Test constructor of journal object (neg)
 
         1) Empty Name
         2) Too long
+
         """
         # 1) Empty Name
         name = ''
@@ -61,6 +62,13 @@ class Test(unittest.TestCase):
         # check if file or directory exists
 
     def test_create_journal_pos(self):
+        """
+        Test constructor of journal object (pos)
+
+        1) Max length
+        2) Initialized Successfully
+
+        """
         # 1) Max length
         name = create_x_length_str_a(MAX_NAME_WIDTH)        
         # 2) Initialized Successfully
@@ -100,7 +108,7 @@ class Test(unittest.TestCase):
         name = create_x_length_str_a(MAX_NAME_WIDTH - 2)
         t_journal = Journal(name)
         self.assertEqual('### ' + name + ' #', t_journal.fprint_name())
-    
+
     def test_fprint_desc(self):
         """
         Test the printing of description
@@ -118,7 +126,7 @@ class Test(unittest.TestCase):
         desc = ''
         t_journal.set_description(desc)
         self.assertEqual('Description:\n', t_journal.fprint_desc())
-        
+
         # 2) Normal description
         desc = 'Book by George Dorwell'
         t_journal.set_description(desc)
@@ -132,7 +140,7 @@ class Test(unittest.TestCase):
                 + create_x_length_str_a(MAX_WIDTH) + '\n' \
                 + create_x_length_str_a(MAX_WIDTH),
             t_journal.fprint_desc())
-        
+
         # 4) Three newlines added because of length
         desc = create_x_length_str_a(MAX_WIDTH) \
             + create_x_length_str_a(MAX_WIDTH) \

@@ -52,7 +52,7 @@ class Journal:
             if i % MAX_WIDTH == 0:
                 formatted_str += '\n'
             formatted_str += letter
-        
+
         if len(formatted_str) == 0:
             return formatted_str
 
