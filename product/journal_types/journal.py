@@ -1,4 +1,6 @@
-# journal.py
+"""
+journal.py
+"""
 from datetime import datetime
 
 # Constants
@@ -12,14 +14,17 @@ E_NAME_NOT_VALID = 'Name "{}" is not a valid name'
 E_NAME_EXCEEDS_MAX = 'Name of length {} exceeds max length {}'
 
 class Journal:
+    """
+    Base object for journal entries
+    """
     def __init__(self, name: str):
-        self.checkName(name)
+        self.check_name(name)
 
         self.journal_name = name
         self.description = ''
         self.additional_notes = ''
-    
-    def checkName(self, name: str):
+
+    def check_name(self, name: str):
         """
         Validate the name against constraints:
         1) Must be non empty
@@ -32,10 +37,10 @@ class Journal:
 
         if name_len > MAX_NAME_WIDTH:
             raise ValueError(E_NAME_EXCEEDS_MAX.format(name_len, MAX_WIDTH - 4))
-        
+
         # TODO check file or directory name exists
-    
-    def __insertWidthNewline(self, s: str):
+
+    def __insert_width_newline(self, s: str):
         """
         Helper function to enforce MAX_WIDTH in output and
         returns formatted string
@@ -50,19 +55,19 @@ class Journal:
         
         if len(formatted_str) == 0:
             return formatted_str
-        
+
         # first character would have inserted a newline, skip it
         return formatted_str[1:]
-    
-    def setDescription(self, desc: str):
+
+    def set_description(self, desc: str):
         """
         Sets/Overrides description of this object and enforces MAX_WIDTH.
         
         desc -- description (must be less than MAX_DESC_LEN)
         """
-        self.description = self.__insertWidthNewline(desc)
-    
-    def appendToNotes(self, note: str):
+        self.description = self.__insert_width_newline(desc)
+
+    def append_notes(self, note: str):
         """
         Appends incoming note to the existing notes with a datetime timestamp.
         
@@ -78,7 +83,7 @@ class Journal:
         """
         if len(note) > 0:
             self.additional_notes += \
-                '[' + str(datetime.now()) + ']\n' + self.__insertWidthNewline(note)
+                '[' + str(datetime.now()) + ']\n' + self.__insert_width_newline(note)
 
     def fprint_name(self) -> str:
         """
@@ -103,7 +108,7 @@ class Journal:
             My description goes here...
         """
         return 'Description:\n' + self.description
-    
+
     def fprint_note(self) -> str:
         """
         Format string with notes as a list of entries where each line is 
@@ -120,7 +125,7 @@ class Journal:
             The most recent note
         """
         return 'Additional Notes:\n' + self.additional_notes
-    
+
     def fprint(self) -> str:
         """
         Format the entire Journal object for printing.
@@ -142,3 +147,4 @@ class Journal:
         formatted_s += self.fprint_note()
 
         return formatted_s
+    
