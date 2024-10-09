@@ -4,7 +4,9 @@ test_journal.py
 Unit tests for journal_type/*
 """
 import unittest
-import re
+from test_utils.test_utilities import DATETIME_PLACEHOLDER
+from test_utils.test_utilities import clean_dt
+from test_utils.test_utilities import create_x_length_str_a
 import sys
 import os
 
@@ -18,18 +20,6 @@ from journal_types.journal import MAX_NAME_WIDTH
 from journal_types.journal import MAX_NOTE_WIDTH
 from journal_types.journal import Journal
 #pylint: enable=wrong-import-position
-
-def create_x_length_str_a(length: int) -> str:
-    """
-    Create a string of 'a' characters repeated based on parameter.
-
-    length -- number of 'a' characters in returned string
-    """
-    name = ''
-    for _ in range(length):
-        name += 'a'
-
-    return name
 
 class Test(unittest.TestCase):
     """
@@ -130,14 +120,14 @@ class Test(unittest.TestCase):
         # 2) Normal description
         desc = 'Book by George Dorwell'
         t_journal.set_description(desc)
-        self.assertEqual('Description:\n' + desc, t_journal.fprint_desc())
+        self.assertEqual('Description:\n  ' + desc, t_journal.fprint_desc())
 
         # 3) One newline added because of length
         desc = create_x_length_str_a(MAX_WIDTH) + create_x_length_str_a(MAX_WIDTH)
         t_journal.set_description(desc)
         self.assertEqual(
-            'Description:\n' \
-                + create_x_length_str_a(MAX_WIDTH) + '\n' \
+            'Description:\n  ' \
+                + create_x_length_str_a(MAX_WIDTH) + '\n  ' \
                 + create_x_length_str_a(MAX_WIDTH),
             t_journal.fprint_desc())
 
@@ -148,9 +138,9 @@ class Test(unittest.TestCase):
 
         t_journal.set_description(desc)
         self.assertEqual(
-            'Description:\n' \
-                + create_x_length_str_a(MAX_WIDTH) + '\n' \
-                + create_x_length_str_a(MAX_WIDTH) + '\n' \
+            'Description:\n  ' \
+                + create_x_length_str_a(MAX_WIDTH) + '\n  ' \
+                + create_x_length_str_a(MAX_WIDTH) + '\n  ' \
                 + create_x_length_str_a(MAX_WIDTH),
             t_journal.fprint_desc())
 
@@ -173,18 +163,32 @@ class Test(unittest.TestCase):
         # 2) Max length for note
         note = create_x_length_str_a(MAX_NOTE_WIDTH)
         t_journal.append_notes(note)
-        # Remove datetime printed since it is non-deterministic
-        #   Additional Notes:\n[datetime]\naaaaaaa...aaaa
-        jnotes = re.split('\\[|\\]', t_journal.fprint_note())
-        # Join the first and last element. Cut out the datetime.
-        # Then trim the newline from the note itself
-        #   [Additional Notes:\n], [datetime], [\naaaaaaa...aaaa]
-        jnotes_without_dt = jnotes[0] + jnotes[2][1:]
-        # Now deterministic format for test comparison
-        #   Additional Notes:\naaaaaaa...aaaa
+        self.assertEqual(
+            'Additional Notes:\n'
+            + '  [' + DATETIME_PLACEHOLDER + ']\n'
+            + '      ' + note,
+            clean_dt(t_journal.fprint_note()))
 
-        self.assertEqual('Additional Notes:\n' + note, jnotes_without_dt)
+    def test_fprint(self):
+        """
+        Test all the print functions together
+        """
+        name = 'Lord of the Fries'
+        t_journal = Journal(name)
+        t_journal.set_description('A movie about human nature and potatoes')
+        t_journal.append_notes('Parody of another movie')
+        t_journal.append_notes('No sequel planned')
 
+        self.assertEqual(
+            '### Lord of the Fries #########################################################\n'
+            + 'Description:\n'
+            + '  A movie about human nature and potatoes\n'
+            + 'Additional Notes:\n'
+            + '  [' + DATETIME_PLACEHOLDER + ']\n'
+            + '      Parody of another movie\n'
+            + '  [' + DATETIME_PLACEHOLDER + ']\n'
+            + '      No sequel planned', 
+            clean_dt(t_journal.fprint()))
 
 if __name__ == "__main__":
     unittest.main()

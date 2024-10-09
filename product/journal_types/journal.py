@@ -7,7 +7,7 @@ from datetime import datetime
 MAX_WIDTH = 79
 MAX_NAME_WIDTH = MAX_WIDTH - 4
 MAX_DESC_LEN = MAX_WIDTH * 10
-MAX_NOTE_WIDTH = MAX_WIDTH
+MAX_NOTE_WIDTH = MAX_WIDTH - 4
 
 # Exceptions
 E_NAME_NOT_VALID = 'Name "{}" is not a valid name'
@@ -36,7 +36,7 @@ class Journal:
             raise ValueError(E_NAME_NOT_VALID.format(name))
 
         if name_len > MAX_NAME_WIDTH:
-            raise ValueError(E_NAME_EXCEEDS_MAX.format(name_len, MAX_WIDTH - 4))
+            raise ValueError(E_NAME_EXCEEDS_MAX.format(name_len, MAX_NAME_WIDTH))
 
         # Check file or directory name exists
 
@@ -50,7 +50,7 @@ class Journal:
         formatted_str = ''
         for i, letter in enumerate(s):
             if i % MAX_WIDTH == 0:
-                formatted_str += '\n'
+                formatted_str += '\n  '
             formatted_str += letter
 
         if len(formatted_str) == 0:
@@ -78,12 +78,16 @@ class Journal:
             
             ...becomes...
                 
-                '[datetime]
-                Hello World'
+                '  [datetime]
+                     Hello World'
         """
+        new_note = '' if len(self.additional_notes) == 0 else '\n'
+
         if len(note) > 0:
-            self.additional_notes += \
-                '[' + str(datetime.now()) + ']\n' + self.__insert_width_newline(note)
+            new_note += \
+                '  [' + str(datetime.now()) + ']\n    ' + self.__insert_width_newline(note)
+        
+        self.additional_notes += new_note
 
     def fprint_name(self) -> str:
         """
@@ -142,8 +146,8 @@ class Journal:
         """
         formatted_s = ''
 
-        formatted_s += self.fprint_name()
-        formatted_s += self.fprint_desc()
+        formatted_s += self.fprint_name() + '\n'
+        formatted_s += self.fprint_desc() + '\n'
         formatted_s += self.fprint_note()
 
         return formatted_s
