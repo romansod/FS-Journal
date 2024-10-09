@@ -12,9 +12,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 #pylint: disable=wrong-import-position
 # Testing utilities
-from test_utils.test_utilities import DATETIME_PLACEHOLDER
-from test_utils.test_utilities import create_x_length_str_a
-from test_utils.test_utilities import clean_dt
+from unittests_all.test_utils.test_utilities import DATETIME_PLACEHOLDER
+from unittests_all.test_utils.test_utilities import create_x_length_str_a
+from unittests_all.test_utils.test_utilities import clean_dt
 # Target file for testing
 from journal_types.journal import MAX_WIDTH
 from journal_types.journal import MAX_NAME_WIDTH
