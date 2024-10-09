@@ -30,4 +30,4 @@ jobs:
 
       - name: Run tests
         run: 
-          python -m unittest -v test/test_journal.py
+          python -m unittest -v test_journal.py
