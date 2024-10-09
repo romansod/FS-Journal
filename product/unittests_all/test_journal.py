@@ -12,12 +12,12 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Now import target file for testing
-#pylint: disable-wrong-import-position
+#pylint: disable=wrong-import-position
 from journal_types.journal import MAX_WIDTH
 from journal_types.journal import MAX_NAME_WIDTH
 from journal_types.journal import MAX_NOTE_WIDTH
 from journal_types.journal import Journal
-#pylint: enable-wrong-import-position
+#pylint: enable=wrong-import-position
 
 def create_x_length_str_a(length: int) -> str:
     """
@@ -70,7 +70,7 @@ class Test(unittest.TestCase):
 
         """
         # 1) Max length
-        name = create_x_length_str_a(MAX_NAME_WIDTH)        
+        name = create_x_length_str_a(MAX_NAME_WIDTH)
         # 2) Initialized Successfully
         t_journal = Journal(name)
         self.assertEqual(name, t_journal.journal_name)
@@ -145,7 +145,7 @@ class Test(unittest.TestCase):
         desc = create_x_length_str_a(MAX_WIDTH) \
             + create_x_length_str_a(MAX_WIDTH) \
             + create_x_length_str_a(MAX_WIDTH)
-        
+
         t_journal.set_description(desc)
         self.assertEqual(
             'Description:\n' \
