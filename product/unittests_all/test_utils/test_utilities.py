@@ -24,6 +24,6 @@ def clean_dt(output_with_dt: str) -> str:
     """
     datetime_pattern = r'\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+\]'
     return re.sub(
-        datetime_pattern, 
-        '[' + DATETIME_PLACEHOLDER + ']', 
+        datetime_pattern,
+        '[' + DATETIME_PLACEHOLDER + ']',
         output_with_dt)

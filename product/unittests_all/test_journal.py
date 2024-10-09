@@ -4,17 +4,18 @@ test_journal.py
 Unit tests for journal_type/*
 """
 import unittest
-from test_utils.test_utilities import DATETIME_PLACEHOLDER
-from test_utils.test_utilities import clean_dt
-from test_utils.test_utilities import create_x_length_str_a
 import sys
 import os
 
 # Ensure the parent directory is in the system path for module imports
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Now import target file for testing
 #pylint: disable=wrong-import-position
+# Testing utilities
+from test_utils.test_utilities import DATETIME_PLACEHOLDER
+from test_utils.test_utilities import create_x_length_str_a
+from test_utils.test_utilities import clean_dt
+# Target file for testing
 from journal_types.journal import MAX_WIDTH
 from journal_types.journal import MAX_NAME_WIDTH
 from journal_types.journal import MAX_NOTE_WIDTH
@@ -187,7 +188,7 @@ class Test(unittest.TestCase):
             + '  [' + DATETIME_PLACEHOLDER + ']\n'
             + '      Parody of another movie\n'
             + '  [' + DATETIME_PLACEHOLDER + ']\n'
-            + '      No sequel planned', 
+            + '      No sequel planned',
             clean_dt(t_journal.fprint()))
 
 if __name__ == "__main__":

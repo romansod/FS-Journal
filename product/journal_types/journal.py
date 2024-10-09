@@ -86,7 +86,7 @@ class Journal:
         if len(note) > 0:
             new_note += \
                 '  [' + str(datetime.now()) + ']\n    ' + self.__insert_width_newline(note)
-        
+
         self.additional_notes += new_note
 
     def fprint_name(self) -> str:
