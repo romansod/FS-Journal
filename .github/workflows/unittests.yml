@@ -29,4 +29,4 @@ jobs:
           # pip install -r requirements.txt  # Or your dependency management method
 
       - name: Run tests
-        run: unittest -v test
+        run: python -m unittest -v test
