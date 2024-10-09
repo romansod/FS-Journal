@@ -30,4 +30,4 @@ jobs:
 
       - name: Run tests
         run: 
-          cd FS-Journal && python -m unittest discover 'FS-Journal/product/unittests_all' -v 'test_*.py'
+          cd product && python -m unittest discover -v 'unittests_all'
