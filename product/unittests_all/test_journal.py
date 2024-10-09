@@ -12,10 +12,12 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Now import target file for testing
+#pylint: disable-wrong-import-position
 from journal_types.journal import MAX_WIDTH
 from journal_types.journal import MAX_NAME_WIDTH
 from journal_types.journal import MAX_NOTE_WIDTH
 from journal_types.journal import Journal
+#pylint: enable-wrong-import-position
 
 def create_x_length_str_a(length: int) -> str:
     """
@@ -40,6 +42,12 @@ class Test(unittest.TestCase):
     test_fprint_note
     """
     def test_create_journal_neg(self):
+        """
+        Test constructor of journal object
+
+        1) Empty Name
+        2) Too long
+        """
         # 1) Empty Name
         name = ''
         self.assertRaises(ValueError, Journal, name)
@@ -49,8 +57,8 @@ class Test(unittest.TestCase):
 
         self.assertRaises(ValueError, Journal, name)
 
-        # File or directory must exist
-        # TODO check if file or directory exists
+        # File or directory must exist:
+        # check if file or directory exists
 
     def test_create_journal_pos(self):
         # 1) Max length
@@ -62,6 +70,15 @@ class Test(unittest.TestCase):
         self.assertEqual('', t_journal.additional_notes)
 
     def test_fprint_name(self):
+        """
+        Test the printing of name
+
+        1) Normal name
+        2) Max length
+        3) Max length -1 with a space printed at end
+        4) Max length -2 with a space and one #
+
+        """
         # 1) Normal name
         name = 'Lord of the Fries'
         t_journal = Journal(name)
@@ -85,6 +102,15 @@ class Test(unittest.TestCase):
         self.assertEqual('### ' + name + ' #', t_journal.fprint_name())
     
     def test_fprint_desc(self):
+        """
+        Test the printing of description
+
+        1) Empty description
+        2) Normal description
+        3) One newline added because of length
+        4) Three newlines added because of length
+
+        """
         name = 'Lord of the Fries'
         t_journal = Journal(name)
 
@@ -121,6 +147,13 @@ class Test(unittest.TestCase):
             t_journal.fprint_desc())
 
     def test_fprint_note(self):
+        """
+        Test the printing of additional notes
+
+        1) Empty note
+        2) Max length for note
+
+        """
         name = 'Lord of the Fries'
         t_journal = Journal(name)
 
@@ -134,7 +167,7 @@ class Test(unittest.TestCase):
         t_journal.append_notes(note)
         # Remove datetime printed since it is non-deterministic
         #   Additional Notes:\n[datetime]\naaaaaaa...aaaa
-        jnotes = re.split('\[|\]', t_journal.fprint_note())
+        jnotes = re.split('\\[|\\]', t_journal.fprint_note())
         # Join the first and last element. Cut out the datetime.
         # Then trim the newline from the note itself
         #   [Additional Notes:\n], [datetime], [\naaaaaaa...aaaa]

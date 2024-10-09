@@ -38,7 +38,7 @@ class Journal:
         if name_len > MAX_NAME_WIDTH:
             raise ValueError(E_NAME_EXCEEDS_MAX.format(name_len, MAX_WIDTH - 4))
 
-        # TODO check file or directory name exists
+        # Check file or directory name exists
 
     def __insert_width_newline(self, s: str):
         """
